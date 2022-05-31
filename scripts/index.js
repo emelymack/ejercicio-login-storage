@@ -44,22 +44,28 @@ const btnLogin = document.querySelector('.login-btn');
 form.addEventListener('submit', (e)=> {
   e.preventDefault();
 
+  let usuarioValido = false;
+
   baseDeDatos.usuarios.forEach(usuario => {
-    if((inputEmail.value !== usuario.email) && (inputPassword.value !== usuario.password)){
-      statusLoader.innerHTML = "ERROR. Usuario o contraseña incorrectos. Intentelo de nuevo."
-    } else {
+    if((inputEmail.value === usuario.email) && (inputPassword.value === usuario.password)){
+      usuarioValido = true;
       localStorage.setItem('id', usuario.id);
+    }
+    
+  });
+  if(usuarioValido){
       statusLoader.classList.remove('hidden'); 
-      btnLogin.addEventListener('click', setTimeout(() => {
+      setTimeout(() => {
         h1.classList.add('hidden');
         form.classList.add('hidden');
         main.innerHTML = "¡Bienvenido al sitio Steve Jobs! :)"
         main.innerHTML += "<button id='sign-out'>Cerrar sesión</button>";
-      }), 10000)
-      
-    }
-    
-  });
+      }, 1000)
+  } else {
+      console.log("ERROR");
+      statusLoader.classList.remove('hidden'); 
+      statusLoader.innerHTML = "ERROR. Usuario o contraseña incorrectos. Intentelo de nuevo."
+  }
 })
 
 
